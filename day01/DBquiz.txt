@@ -1,0 +1,176 @@
+SQL> -- 1.  입사년도가 1981년이고 연봉이 1200이 넘는 사원의 사번과 부서번호를 출력
+
+SQL> SELECT EMPNO, ENAME, DEPTNO
+  2  FROM EMP
+  3  WHERE HIREDATE >= '81/01/01' AND HIREDATE <='81/12/31' AND SAL >= 1200;
+
+     EMPNO ENAME                    DEPTNO                                      
+---------- -------------------- ----------                                      
+      7499 ALLEN                        30                                      
+      7521 WARD                         30                                      
+      7566 JONES                        20                                      
+      7654 MARTIN                       30                                      
+      7698 BLAKE                        30                                      
+      7782 CLARK                        10                                      
+      7839 KING                         10                                      
+      7844 TURNER                       30                                      
+      7902 FORD                         20                                      
+
+9 행이 선택되었습니다.
+
+SQL> -- 2. 연봉이 2000~3000 사이이고 사원의 이름과 급여?
+SQL> SELECT ENAME, SAL
+  2  FROM EMP
+  3  WHERE SAL >= 2000 AND SAL <= 3000;
+
+ENAME                       SAL                                                 
+-------------------- ----------                                                 
+JONES                      2975                                                 
+BLAKE                      2850                                                 
+CLARK                      2450                                                 
+SCOTT                      3000                                                 
+FORD                       3000                                                 
+
+SQL> -- 3. 급여가 3000 이상인 사원의 사원명과 사원번호, 직무를 출력
+SQL> SELECT EMPNO, ENAME, JOB
+  2  FROM EMP
+  3  WHERE SAL >= 3000;
+
+     EMPNO ENAME                JOB                                             
+---------- -------------------- ------------------                              
+      7788 SCOTT                ANALYST                                         
+      7839 KING                 PRESIDENT                                       
+      7902 FORD                 ANALYST                                         
+
+SQL> -- 4. 사원 테이블에서 커미션을 받는 사람 중에서 커미션이 0이 아닌 사원의 이름과 커미션을 출력
+SQL> SELECT ENAME, COMM
+  2  FROM EMP
+  3  WHERE COMM IS NOT NULL AND COMM != 0;
+
+ENAME                      COMM                                                 
+-------------------- ----------                                                 
+ALLEN                       300                                                 
+WARD                        500                                                 
+MARTIN                     1400                                                 
+
+SQL> -- 5. 사원 테이블에서 부서 번호를 중복되지 않게 출력
+SQL> SELECT DISTINCT DEPTNO
+  2  FROM EMP;
+
+    DEPTNO                                                                      
+----------                                                                      
+        20                                                                      
+        30                                                                      
+        10                                                                      
+        40                                                                      
+
+SQL> -- 6. 10번 부서 사원들의 이름, 급여, 입사일, 부서번호를 출력
+SQL> SELECT ENAME, SAL, HIREDATE, DEPTNO
+  2  FROM EMP
+  3  WHERE DEPTNO = 10;
+
+ENAME                       SAL HIREDATE     DEPTNO                             
+-------------------- ---------- -------- ----------                             
+CLARK                      2450 81/06/09         10                             
+KING                       5000 81/11/17         10                             
+
+SQL> -- 7. 월급이 500이상 1500 이하인 사원의 사원번호, 월급 부서번호 출력
+SQL> SELECT EMPNO, SAL, DEPTNO
+  2  FROM EMP
+  3  WHERE SAL >= 500 AND SAL <= 1500;
+
+     EMPNO        SAL     DEPTNO                                                
+---------- ---------- ----------                                                
+      7369        800         20                                                
+      7521       1250         30                                                
+      7654       1250         30                                                
+      7844       1500         30                                                
+      7876       1100         20                                                
+      7900        950         30                                                
+      7934       1300         40                                                
+
+7 행이 선택되었습니다.
+
+SQL> -- 8. 입사일이 82년 2월 1일 이후인 사원의 모든 정보를 출력
+SQL> SELECT *
+  2  FROM EMP
+  3  WHERE HIREDATE >= '82/02/01';
+
+     EMPNO ENAME                JOB                       MGR HIREDATE          
+---------- -------------------- ------------------ ---------- --------          
+       SAL       COMM     DEPTNO                                                
+---------- ---------- ----------                                                
+      7788 SCOTT                ANALYST                  7566 82/12/09          
+      3000                    20                                                
+                                                                                
+      7876 ADAMS                CLERK                    7788 83/01/12          
+      1100                    20                                                
+                                                                                
+
+SQL> -- 9. 연봉이 2500이상이면서 5000이하인 직원의 이름과 부서번호, 입사날짜를 출력
+SQL> SELECT ENAME, DEPTNO, HIREDATE
+  2  FROM EMP
+  3  WHERE SAL >= 2500 AND SAL <= 5000;
+
+ENAME                    DEPTNO HIREDATE                                        
+-------------------- ---------- --------                                        
+JONES                        20 81/04/02                                        
+BLAKE                        30 81/05/01                                        
+SCOTT                        20 82/12/09                                        
+KING                         10 81/11/17                                        
+FORD                         20 81/12/03                                        
+
+SQL> -- 10. 급여가 2500 이상 3000 이하인 사원의 사원번호, 이름, 부서번호, 입사일 출력
+SQL> SELECT EMPNO, ENAME, DEPTNO, HIREDATE
+  2  FROM EMP
+  3  WHERE SAL >= 2500 AND SAL <= 3000;
+
+     EMPNO ENAME                    DEPTNO HIREDATE                             
+---------- -------------------- ---------- --------                             
+      7566 JONES                        20 81/04/02                             
+      7698 BLAKE                        30 81/05/01                             
+      7788 SCOTT                        20 82/12/09                             
+      7902 FORD                         20 81/12/03                             
+
+SQL> -- 11. 부서 번호가 20인 부서의 일일당 임금을 계산하여 출력
+SQL> -- 일일 임금 = 급여 / 30 기준
+SQL> SELECT SAL, COMM AS (SAL + COMM) / 30
+
+SQL> SELECT SAL, SAL / 30 AS DAYPAY
+  2  FROM EMP
+  3  WHERE DEPTNO = 20;
+
+       SAL     DAYPAY                                                           
+---------- ----------                                                           
+       800 26.6666667                                                           
+      2975 99.1666667                                                           
+      3000        100                                                           
+      1100 36.6666667                                                           
+      3000        100                                                           
+
+SQL> -- 12. 매니저(MGR)가 7566과 7782인 사원번호, 사원명, 매니저, 부서번호를 출력
+
+SQL> SELECT EMPNO, ENAME, MGR, DEPTNO
+  2  FROM EMP
+  3  WHERE MGR = 7566 OR MGR = 7782;
+
+     EMPNO ENAME                       MGR     DEPTNO                           
+---------- -------------------- ---------- ----------                           
+      7788 SCOTT                      7566         20                           
+      7902 FORD                       7566         20                           
+      7934 MILLER                     7782         40                           
+
+SQL> -- 13. 급여가 1100보다 크고 2000보다 작은 사원번호, 사원명, 급여 출력
+SQL> SELECT EMPNO, ENAME, SAL
+  2  FROM EMP
+  3  WHERE SAL > 1100 AND SAL < 2000;
+
+     EMPNO ENAME                       SAL                                      
+---------- -------------------- ----------                                      
+      7499 ALLEN                      1600                                      
+      7521 WARD                       1250                                      
+      7654 MARTIN                     1250                                      
+      7844 TURNER                     1500                                      
+      7934 MILLER                     1300                                      
+
+SQL> SPOOL OFF
