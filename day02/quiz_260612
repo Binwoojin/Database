@@ -1,0 +1,640 @@
+SQL> -- 1. 사원들의 이름, 부서번호, 부서 이름을 출력하시오
+SQL> select e.ename, e.deptno, d.dname
+  2  from emp e, dept d
+  3  where e.deptno = d.deptno;
+
+ENAME                    DEPTNO DNAME                                           
+-------------------- ---------- ----------------------------                    
+SMITH                        20 RESEARCH                                        
+ALLEN                        30 SALES                                           
+WARD                         30 SALES                                           
+JONES                        20 RESEARCH                                        
+MARTIN                       30 SALES                                           
+BLAKE                        30 SALES                                           
+CLARK                        10 ACCOUNTING                                      
+SCOTT                        20 RESEARCH                                        
+KING                         10 ACCOUNTING                                      
+TURNER                       30 SALES                                           
+ADAMS                        20 RESEARCH                                        
+
+ENAME                    DEPTNO DNAME                                           
+-------------------- ---------- ----------------------------                    
+JAMES                        30 SALES                                           
+FORD                         20 RESEARCH                                        
+MILLER                       40 OPERATIONS                                      
+
+14 행이 선택되었습니다.
+
+SQL> -- 2. 30번 부서의 사원들의 이름, 직업, 부서위치를 출력하시오
+SQL> select e.ename e.job d.loc
+  2  from emp e, dept d
+  3  where e.deptno = 30 and d.deptno = 30;
+select e.ename e.job d.loc
+                *
+1행에 오류:
+ORA-00923: FROM 키워드가 필요한 위치에 없습니다. 
+
+
+SQL> select e.ename, e.job, d.loc
+  2  from emp e, dept d
+  3  where e.deptno = 30 and d.deptno = 30;
+
+ENAME                JOB                LOC                                     
+-------------------- ------------------ --------------------------              
+ALLEN                SALESMAN           CHICAGO                                 
+WARD                 SALESMAN           CHICAGO                                 
+MARTIN               SALESMAN           CHICAGO                                 
+BLAKE                MANAGER            CHICAGO                                 
+TURNER               SALESMAN           CHICAGO                                 
+JAMES                CLERK              CHICAGO                                 
+
+6 행이 선택되었습니다.
+
+SQL> -- 3. 커미션을 받는 사원의 이름, 부서이름 및 부서 위치를 출력하시오
+SQL> select e.ename, d.dname, d.loc
+  2  from emp e, dept d
+  3  where e.comm > 0
+  4  ;
+
+ENAME                DNAME                        LOC                           
+-------------------- ---------------------------- --------------------------    
+ALLEN                ACCOUNTING                   NEW YORK                      
+ALLEN                RESEARCH                     DALLAS                        
+ALLEN                SALES                        CHICAGO                       
+ALLEN                OPERATIONS                   BOSTON                        
+WARD                 ACCOUNTING                   NEW YORK                      
+WARD                 RESEARCH                     DALLAS                        
+WARD                 SALES                        CHICAGO                       
+WARD                 OPERATIONS                   BOSTON                        
+MARTIN               ACCOUNTING                   NEW YORK                      
+MARTIN               RESEARCH                     DALLAS                        
+MARTIN               SALES                        CHICAGO                       
+
+ENAME                DNAME                        LOC                           
+-------------------- ---------------------------- --------------------------    
+MARTIN               OPERATIONS                   BOSTON                        
+
+12 행이 선택되었습니다.
+
+SQL> select e.ename, d.dname, d.loc
+  2  from emp e, dept d
+  3  where e.deptno = d.deptno and e.comm > 0
+  4  ;
+
+ENAME                DNAME                        LOC                           
+-------------------- ---------------------------- --------------------------    
+ALLEN                SALES                        CHICAGO                       
+WARD                 SALES                        CHICAGO                       
+MARTIN               SALES                        CHICAGO                       
+
+SQL> select e.ename, e.comm, d.dname, d.loc
+  2  from emp e, dept d
+  3  where e.deptno = d.deptno and e.comm > 0;
+
+ENAME                      COMM DNAME                                           
+-------------------- ---------- ----------------------------                    
+LOC                                                                             
+--------------------------                                                      
+ALLEN                       300 SALES                                           
+CHICAGO                                                                         
+                                                                                
+WARD                        500 SALES                                           
+CHICAGO                                                                         
+                                                                                
+MARTIN                     1400 SALES                                           
+CHICAGO                                                                         
+                                                                                
+
+SQL> -- 4. dallas에서 근무하는 사원의 이름, 직업, 부서번호, 부서이름을 출력하시오
+SQL> select e.ename, e.job, e.deptno, d.dname
+  2  from emp e, dept d
+  3  where e.deptno = d.deptno and d.loc = 'DALLAS'l
+  4  ;
+where e.deptno = d.deptno and d.loc = 'DALLAS'l
+                                              *
+3행에 오류:
+ORA-00933: SQL 명령어가 올바르게 종료되지 않았습니다 
+
+
+SQL> select e.ename, e.job, e.deptno, d.dname
+  2  from emp e, dept d
+  3  where e.deptno = d.deptno and d.loc = 'DALLAS';
+
+ENAME                JOB                    DEPTNO DNAME                        
+-------------------- ------------------ ---------- ---------------------------- 
+SMITH                CLERK                      20 RESEARCH                     
+JONES                MANAGER                    20 RESEARCH                     
+SCOTT                ANALYST                    20 RESEARCH                     
+ADAMS                CLERK                      20 RESEARCH                     
+FORD                 ANALYST                    20 RESEARCH                     
+
+SQL> select e.ename, e.job, e.deptno, d.dname, d.loc
+  2  from emp e, dept d
+  3  where e.deptno = d.deptno and d.loc = 'DALLAS';
+
+ENAME                JOB                    DEPTNO DNAME                        
+-------------------- ------------------ ---------- ---------------------------- 
+LOC                                                                             
+--------------------------                                                      
+SMITH                CLERK                      20 RESEARCH                     
+DALLAS                                                                          
+                                                                                
+JONES                MANAGER                    20 RESEARCH                     
+DALLAS                                                                          
+                                                                                
+SCOTT                ANALYST                    20 RESEARCH                     
+DALLAS                                                                          
+                                                                                
+
+ENAME                JOB                    DEPTNO DNAME                        
+-------------------- ------------------ ---------- ---------------------------- 
+LOC                                                                             
+--------------------------                                                      
+ADAMS                CLERK                      20 RESEARCH                     
+DALLAS                                                                          
+                                                                                
+FORD                 ANALYST                    20 RESEARCH                     
+DALLAS                                                                          
+                                                                                
+
+SQL> -- 5. 이름에 A가 들어가는 사원들의 이름과 부서 이름을 출력하시오
+SQL> select e.ename, d.dname
+  2  from emp e, dept d
+  3  where e.deptno = d.deptno and e.ename = '%A';
+
+선택된 레코드가 없습니다.
+
+SQL> select e.ename, d.dname
+  2  from emp e, dept d
+  3  where e.deptno = d.deptno and e.ename = '%A%';
+
+선택된 레코드가 없습니다.
+
+SQL> select e.ename, d.dname
+  2  from emp e, dept d
+  3  where e.deptno = d.deptno and e.ename like '%A%';
+
+ENAME                DNAME                                                      
+-------------------- ----------------------------                               
+ALLEN                SALES                                                      
+WARD                 SALES                                                      
+MARTIN               SALES                                                      
+BLAKE                SALES                                                      
+CLARK                ACCOUNTING                                                 
+ADAMS                RESEARCH                                                   
+JAMES                SALES                                                      
+
+7 행이 선택되었습니다.
+
+SQL> -- 6. 사원 이름과 그 사원의 관리자 이름을 출력하시오
+SQL> -- 단, 컬럼 HEADING을 employeee, manager로 출력
+SQL> select e.ename, c.ename
+  2  from emp e, emp c
+  3  where e.mgr = c.empno;
+
+ENAME                ENAME                                                      
+-------------------- --------------------                                       
+SCOTT                JONES                                                      
+FORD                 JONES                                                      
+ALLEN                BLAKE                                                      
+WARD                 BLAKE                                                      
+MARTIN               BLAKE                                                      
+TURNER               BLAKE                                                      
+JAMES                BLAKE                                                      
+MILLER               CLARK                                                      
+ADAMS                SCOTT                                                      
+JONES                KING                                                       
+BLAKE                KING                                                       
+
+ENAME                ENAME                                                      
+-------------------- --------------------                                       
+CLARK                KING                                                       
+SMITH                FORD                                                       
+
+13 행이 선택되었습니다.
+
+SQL> select e.ename as "employeee", c.ename as "manager"
+  2  from emp e, emp c
+  3  where e.mgr = c.empno(+);
+
+employeee            manager                                                    
+-------------------- --------------------                                       
+SCOTT                JONES                                                      
+FORD                 JONES                                                      
+ALLEN                BLAKE                                                      
+WARD                 BLAKE                                                      
+MARTIN               BLAKE                                                      
+TURNER               BLAKE                                                      
+JAMES                BLAKE                                                      
+MILLER               CLARK                                                      
+ADAMS                SCOTT                                                      
+JONES                KING                                                       
+BLAKE                KING                                                       
+
+employeee            manager                                                    
+-------------------- --------------------                                       
+CLARK                KING                                                       
+SMITH                FORD                                                       
+KING                                                                            
+
+14 행이 선택되었습니다.
+
+SQL> -- 7. 사원이름과 직업, 급여, 급여등급을 출력하시오
+SQL> select e.ename, e.job, e.sal, s.grade
+  2  from emp e, salgrade s
+  3  where e.sal between s.losal and s.hisal;
+
+ENAME                JOB                       SAL      GRADE                   
+-------------------- ------------------ ---------- ----------                   
+SMITH                CLERK                     800          1                   
+JAMES                CLERK                     950          1                   
+ADAMS                CLERK                    1100          1                   
+WARD                 SALESMAN                 1250          2                   
+MARTIN               SALESMAN                 1250          2                   
+MILLER               CLERK                    1300          2                   
+TURNER               SALESMAN                 1500          3                   
+ALLEN                SALESMAN                 1600          3                   
+CLARK                MANAGER                  2450          4                   
+BLAKE                MANAGER                  2850          4                   
+JONES                MANAGER                  2975          4                   
+
+ENAME                JOB                       SAL      GRADE                   
+-------------------- ------------------ ---------- ----------                   
+SCOTT                ANALYST                  3000          4                   
+FORD                 ANALYST                  3000          4                   
+KING                 PRESIDENT                5000          5                   
+
+14 행이 선택되었습니다.
+
+SQL> -- 8. 사원이름과 부서명과 월급을 출력하는데 월급이 3000 이상인 사원을 출력하시오
+SQL> select e.ename, d.dname, e.sal
+  2  where emp e, dept d
+  3  
+SQL> 
+SQL> select e.ename, d.dname, e.sal
+  2  from emp e, dept d
+  3  where e.deptno = d.deptno and e.sal >= 3000;
+
+ENAME                DNAME                               SAL                    
+-------------------- ---------------------------- ----------                    
+SCOTT                RESEARCH                           3000                    
+KING                 ACCOUNTING                         5000                    
+FORD                 RESEARCH                           3000                    
+
+SQL> -- 9. 사원의 이름, 부서번호와 같은 부서에 근무하는 동료 사원들을 출력하시오
+SQL> select e.ename as "사원 이름", d.deptno as "부서 번호", c.ename as "동료 이름"
+  2  from emp e, dept d, emp c
+  3  where e.deptno = d.deptno and d.deptno = c.deptno;
+
+사원 이름             부서 번호 동료 이름                                       
+-------------------- ---------- --------------------                            
+SMITH                        20 SMITH                                           
+JONES                        20 SMITH                                           
+SCOTT                        20 SMITH                                           
+ADAMS                        20 SMITH                                           
+FORD                         20 SMITH                                           
+ALLEN                        30 ALLEN                                           
+WARD                         30 ALLEN                                           
+MARTIN                       30 ALLEN                                           
+BLAKE                        30 ALLEN                                           
+TURNER                       30 ALLEN                                           
+JAMES                        30 ALLEN                                           
+
+사원 이름             부서 번호 동료 이름                                       
+-------------------- ---------- --------------------                            
+ALLEN                        30 WARD                                            
+WARD                         30 WARD                                            
+MARTIN                       30 WARD                                            
+BLAKE                        30 WARD                                            
+TURNER                       30 WARD                                            
+JAMES                        30 WARD                                            
+SMITH                        20 JONES                                           
+JONES                        20 JONES                                           
+SCOTT                        20 JONES                                           
+ADAMS                        20 JONES                                           
+FORD                         20 JONES                                           
+
+사원 이름             부서 번호 동료 이름                                       
+-------------------- ---------- --------------------                            
+ALLEN                        30 MARTIN                                          
+WARD                         30 MARTIN                                          
+MARTIN                       30 MARTIN                                          
+BLAKE                        30 MARTIN                                          
+TURNER                       30 MARTIN                                          
+JAMES                        30 MARTIN                                          
+ALLEN                        30 BLAKE                                           
+WARD                         30 BLAKE                                           
+MARTIN                       30 BLAKE                                           
+BLAKE                        30 BLAKE                                           
+TURNER                       30 BLAKE                                           
+
+사원 이름             부서 번호 동료 이름                                       
+-------------------- ---------- --------------------                            
+JAMES                        30 BLAKE                                           
+CLARK                        10 CLARK                                           
+KING                         10 CLARK                                           
+SMITH                        20 SCOTT                                           
+JONES                        20 SCOTT                                           
+SCOTT                        20 SCOTT                                           
+ADAMS                        20 SCOTT                                           
+FORD                         20 SCOTT                                           
+CLARK                        10 KING                                            
+KING                         10 KING                                            
+ALLEN                        30 TURNER                                          
+
+사원 이름             부서 번호 동료 이름                                       
+-------------------- ---------- --------------------                            
+WARD                         30 TURNER                                          
+MARTIN                       30 TURNER                                          
+BLAKE                        30 TURNER                                          
+TURNER                       30 TURNER                                          
+JAMES                        30 TURNER                                          
+SMITH                        20 ADAMS                                           
+JONES                        20 ADAMS                                           
+SCOTT                        20 ADAMS                                           
+ADAMS                        20 ADAMS                                           
+FORD                         20 ADAMS                                           
+ALLEN                        30 JAMES                                           
+
+사원 이름             부서 번호 동료 이름                                       
+-------------------- ---------- --------------------                            
+WARD                         30 JAMES                                           
+MARTIN                       30 JAMES                                           
+BLAKE                        30 JAMES                                           
+TURNER                       30 JAMES                                           
+JAMES                        30 JAMES                                           
+SMITH                        20 FORD                                            
+JONES                        20 FORD                                            
+SCOTT                        20 FORD                                            
+ADAMS                        20 FORD                                            
+FORD                         20 FORD                                            
+MILLER                       40 MILLER                                          
+
+66 행이 선택되었습니다.
+
+SQL> select e.ename as "사원 이름", e.deptno as "부서 번호", c.ename as "동료 이름"
+  2  from emp e, emp c
+  3  where e.detpno = c.deptno;
+where e.detpno = c.deptno
+                  *
+3행에 오류:
+ORA-00904: "E"."DETPNO": 부적합한 식별자 
+
+
+SQL> select e.ename as "사원 이름", e.deptno as "부서 번호", c.ename as "동료 이름"
+  2  from emp e, emp c
+  3  where e.deptno = c.deptno;
+
+사원 이름             부서 번호 동료 이름                                       
+-------------------- ---------- --------------------                            
+SMITH                        20 SMITH                                           
+JONES                        20 SMITH                                           
+SCOTT                        20 SMITH                                           
+ADAMS                        20 SMITH                                           
+FORD                         20 SMITH                                           
+ALLEN                        30 ALLEN                                           
+WARD                         30 ALLEN                                           
+MARTIN                       30 ALLEN                                           
+BLAKE                        30 ALLEN                                           
+TURNER                       30 ALLEN                                           
+JAMES                        30 ALLEN                                           
+
+사원 이름             부서 번호 동료 이름                                       
+-------------------- ---------- --------------------                            
+ALLEN                        30 WARD                                            
+WARD                         30 WARD                                            
+MARTIN                       30 WARD                                            
+BLAKE                        30 WARD                                            
+TURNER                       30 WARD                                            
+JAMES                        30 WARD                                            
+SMITH                        20 JONES                                           
+JONES                        20 JONES                                           
+SCOTT                        20 JONES                                           
+ADAMS                        20 JONES                                           
+FORD                         20 JONES                                           
+
+사원 이름             부서 번호 동료 이름                                       
+-------------------- ---------- --------------------                            
+ALLEN                        30 MARTIN                                          
+WARD                         30 MARTIN                                          
+MARTIN                       30 MARTIN                                          
+BLAKE                        30 MARTIN                                          
+TURNER                       30 MARTIN                                          
+JAMES                        30 MARTIN                                          
+ALLEN                        30 BLAKE                                           
+WARD                         30 BLAKE                                           
+MARTIN                       30 BLAKE                                           
+BLAKE                        30 BLAKE                                           
+TURNER                       30 BLAKE                                           
+
+사원 이름             부서 번호 동료 이름                                       
+-------------------- ---------- --------------------                            
+JAMES                        30 BLAKE                                           
+CLARK                        10 CLARK                                           
+KING                         10 CLARK                                           
+SMITH                        20 SCOTT                                           
+JONES                        20 SCOTT                                           
+SCOTT                        20 SCOTT                                           
+ADAMS                        20 SCOTT                                           
+FORD                         20 SCOTT                                           
+CLARK                        10 KING                                            
+KING                         10 KING                                            
+ALLEN                        30 TURNER                                          
+
+사원 이름             부서 번호 동료 이름                                       
+-------------------- ---------- --------------------                            
+WARD                         30 TURNER                                          
+MARTIN                       30 TURNER                                          
+BLAKE                        30 TURNER                                          
+TURNER                       30 TURNER                                          
+JAMES                        30 TURNER                                          
+SMITH                        20 ADAMS                                           
+JONES                        20 ADAMS                                           
+SCOTT                        20 ADAMS                                           
+ADAMS                        20 ADAMS                                           
+FORD                         20 ADAMS                                           
+ALLEN                        30 JAMES                                           
+
+사원 이름             부서 번호 동료 이름                                       
+-------------------- ---------- --------------------                            
+WARD                         30 JAMES                                           
+MARTIN                       30 JAMES                                           
+BLAKE                        30 JAMES                                           
+TURNER                       30 JAMES                                           
+JAMES                        30 JAMES                                           
+SMITH                        20 FORD                                            
+JONES                        20 FORD                                            
+SCOTT                        20 FORD                                            
+ADAMS                        20 FORD                                            
+FORD                         20 FORD                                            
+MILLER                       40 MILLER                                          
+
+66 행이 선택되었습니다.
+
+SQL> select e.ename as "사원 이름", e.deptno as "부서 번호", c.ename as "동료 이름"
+  2  from emp e, emp c
+  3  where e.deptno = c.deptno and e.ename != c.ename;
+
+사원 이름             부서 번호 동료 이름                                       
+-------------------- ---------- --------------------                            
+JONES                        20 SMITH                                           
+SCOTT                        20 SMITH                                           
+ADAMS                        20 SMITH                                           
+FORD                         20 SMITH                                           
+WARD                         30 ALLEN                                           
+MARTIN                       30 ALLEN                                           
+BLAKE                        30 ALLEN                                           
+TURNER                       30 ALLEN                                           
+JAMES                        30 ALLEN                                           
+ALLEN                        30 WARD                                            
+MARTIN                       30 WARD                                            
+
+사원 이름             부서 번호 동료 이름                                       
+-------------------- ---------- --------------------                            
+BLAKE                        30 WARD                                            
+TURNER                       30 WARD                                            
+JAMES                        30 WARD                                            
+SMITH                        20 JONES                                           
+SCOTT                        20 JONES                                           
+ADAMS                        20 JONES                                           
+FORD                         20 JONES                                           
+ALLEN                        30 MARTIN                                          
+WARD                         30 MARTIN                                          
+BLAKE                        30 MARTIN                                          
+TURNER                       30 MARTIN                                          
+
+사원 이름             부서 번호 동료 이름                                       
+-------------------- ---------- --------------------                            
+JAMES                        30 MARTIN                                          
+ALLEN                        30 BLAKE                                           
+WARD                         30 BLAKE                                           
+MARTIN                       30 BLAKE                                           
+TURNER                       30 BLAKE                                           
+JAMES                        30 BLAKE                                           
+KING                         10 CLARK                                           
+SMITH                        20 SCOTT                                           
+JONES                        20 SCOTT                                           
+ADAMS                        20 SCOTT                                           
+FORD                         20 SCOTT                                           
+
+사원 이름             부서 번호 동료 이름                                       
+-------------------- ---------- --------------------                            
+CLARK                        10 KING                                            
+ALLEN                        30 TURNER                                          
+WARD                         30 TURNER                                          
+MARTIN                       30 TURNER                                          
+BLAKE                        30 TURNER                                          
+JAMES                        30 TURNER                                          
+SMITH                        20 ADAMS                                           
+JONES                        20 ADAMS                                           
+SCOTT                        20 ADAMS                                           
+FORD                         20 ADAMS                                           
+ALLEN                        30 JAMES                                           
+
+사원 이름             부서 번호 동료 이름                                       
+-------------------- ---------- --------------------                            
+WARD                         30 JAMES                                           
+MARTIN                       30 JAMES                                           
+BLAKE                        30 JAMES                                           
+TURNER                       30 JAMES                                           
+SMITH                        20 FORD                                            
+JONES                        20 FORD                                            
+SCOTT                        20 FORD                                            
+ADAMS                        20 FORD                                            
+
+52 행이 선택되었습니다.
+
+SQL> -- 10. BLAKE라는 사원보다 늦게 입사한 사원의 이름과 입사일을 출력하시오
+SQL> select ename, hiredate
+  2  from dual
+  3  where ename = 'BLAKE';
+where ename = 'BLAKE'
+      *
+3행에 오류:
+ORA-00904: "ENAME": 부적합한 식별자 
+
+
+SQL> select ename, hiredate
+  2  from emp
+  3  where ename = 'BLAKE';
+
+ENAME                HIREDATE                                                   
+-------------------- --------                                                   
+BLAKE                81/05/01                                                   
+
+SQL> select ename, hiredate
+  2  from empo
+  3  
+SQL> 
+SQL> 
+SQL> select ename, hiredate
+  2  from emp
+  3  
+SQL> 
+SQL> 
+SQL> select e.ename c.hiredate
+  2  from emp e emp c
+  3  where e.ename = 'BLAKE' and e.hiredate < d.hiredate;
+select e.ename c.hiredate
+                *
+1행에 오류:
+ORA-00923: FROM 키워드가 필요한 위치에 없습니다. 
+
+
+SQL> select e.ename, c.hiredate
+  2  from emp e emp c
+  3  where e.ename = 'BLAKE' and e.hiredate < d.hiredate;
+from emp e emp c
+           *
+2행에 오류:
+ORA-00933: SQL 명령어가 올바르게 종료되지 않았습니다 
+
+
+SQL> select e.ename, c.hiredate
+  2  from emp e, emp c
+  3  where e.ename = 'BLAKE' and e.hiredate < d.hiredate;
+where e.ename = 'BLAKE' and e.hiredate < d.hiredate
+                                         *
+3행에 오류:
+ORA-00904: "D"."HIREDATE": 부적합한 식별자 
+
+
+SQL> from emp e, emp c
+SP2-0734: "from emp e..."(으)로 시작되는 알 수 없는 명령 - 나머지 줄은 무시되었습니다.
+SQL> select e.ename, c.hiredate
+  2  from emp e, emp c
+  3  where e.ename = 'BLAKE' and e.hiredate < c.hiredate;
+
+ENAME                HIREDATE                                                   
+-------------------- --------                                                   
+BLAKE                81/09/28                                                   
+BLAKE                81/06/09                                                   
+BLAKE                82/12/09                                                   
+BLAKE                81/11/17                                                   
+BLAKE                81/09/08                                                   
+BLAKE                83/01/12                                                   
+BLAKE                81/12/03                                                   
+BLAKE                81/12/03                                                   
+BLAKE                82/01/23                                                   
+
+9 행이 선택되었습니다.
+
+SQL> select c.ename, c.hiredate
+  2  from emp e, emp c
+  3  where e.ename = 'BLAKE' and e.hiredate < c.hiredate;
+
+ENAME                HIREDATE                                                   
+-------------------- --------                                                   
+MARTIN               81/09/28                                                   
+CLARK                81/06/09                                                   
+SCOTT                82/12/09                                                   
+KING                 81/11/17                                                   
+TURNER               81/09/08                                                   
+ADAMS                83/01/12                                                   
+JAMES                81/12/03                                                   
+FORD                 81/12/03                                                   
+MILLER               82/01/23                                                   
+
+9 행이 선택되었습니다.
+
+SQL> spool off
