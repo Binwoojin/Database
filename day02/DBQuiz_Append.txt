@@ -1,0 +1,179 @@
+SQL> -- 14. 이름에 L자를 포함하는 사원의 이름, JOB, 부서번호를 출력하시오
+SQL> select ename, job, deptno
+  2  from emp
+  3  where ename like '%L%';
+
+ENAME                JOB                    DEPTNO                              
+-------------------- ------------------ ----------                              
+ALLEN                SALESMAN                   30                              
+BLAKE                MANAGER                    30                              
+CLARK                MANAGER                    10                              
+MILLER               CLERK                      40                              
+
+SQL> -- 15. 급여가 1500~5000 사이이고 이름에 'A'가 3번째 들어가는 사람을 출력
+
+SQL> select ename, sal
+  2  from emp
+  3  where sal between 1500 and 5000 and ename like '__A%';
+
+ENAME                       SAL                                                 
+-------------------- ----------                                                 
+BLAKE                      2850                                                 
+CLARK                      2450                                                 
+
+SQL> -- 16. 8칸 길이에 봉급(sal)을 표현하고 나머지는 *로 채우세요
+
+SQL> select RPAD(sal, 8, '*')
+  2  from emp;
+
+RPAD(SAL,8,'*')                                                                 
+----------------------------------------------------------------                
+800*****                                                                        
+1600****                                                                        
+1250****                                                                        
+2975****                                                                        
+1250****                                                                        
+2850****                                                                        
+2450****                                                                        
+3000****                                                                        
+5000****                                                                        
+1500****                                                                        
+1100****                                                                        
+
+RPAD(SAL,8,'*')                                                                 
+----------------------------------------------------------------                
+950*****                                                                        
+3000****                                                                        
+1300****                                                                        
+
+14 행이 선택되었습니다.
+
+SQL> -- 17. 부서번호가 20인 사람 중에 이름이 S로 시작하는 사람을 출력하시오
+
+SQL> select ename, deptno
+  2  from emp
+  3  where deptno = 20 and ename like 'S%';
+
+ENAME                    DEPTNO                                                 
+-------------------- ----------                                                 
+SMITH                        20                                                 
+SCOTT                        20                                                 
+
+SQL> -- 18. 이름에 S 또는 I를 포함한 사원의 이름, 직업, 부서번호, 사원번호, 연봉을 출력하시오
+
+SQL> select ename, job, deptno, empno, sal
+  2  from emp
+  3  where ename like '%S%' or ename like '%I%';
+
+ENAME                JOB                    DEPTNO      EMPNO        SAL        
+-------------------- ------------------ ---------- ---------- ----------        
+SMITH                CLERK                      20       7369        800        
+JONES                MANAGER                    20       7566       2975        
+MARTIN               SALESMAN                   30       7654       1250        
+SCOTT                ANALYST                    20       7788       3000        
+KING                 PRESIDENT                  10       7839       5000        
+ADAMS                CLERK                      20       7876       1100        
+JAMES                CLERK                      30       7900        950        
+MILLER               CLERK                      40       7934       1300        
+
+8 행이 선택되었습니다.
+
+SQL> -- 19. 이름에 S로 시작하고 마지막 글자가 H인 사람의 모든 정보를 출력하시오
+
+SQL> select *
+  2  from emp
+  3  where ename like 'S%' and ename like '%H';
+
+     EMPNO ENAME                JOB                       MGR HIREDATE          
+---------- -------------------- ------------------ ---------- --------          
+       SAL       COMM     DEPTNO                                                
+---------- ---------- ----------                                                
+      7369 SMITH                CLERK                    7902 80/12/17          
+       800                    20                                                
+                                                                                
+
+SQL> -- 20. 이름이 다섯자인 사람의 리스트를 출력하시오 (이름만 출력하자)
+
+SQL> select ename
+  2  from emp
+  3  where ename like '_____';
+
+ENAME                                                                           
+--------------------                                                            
+SMITH                                                                           
+ALLEN                                                                           
+JONES                                                                           
+BLAKE                                                                           
+CLARK                                                                           
+SCOTT                                                                           
+ADAMS                                                                           
+JAMES                                                                           
+
+8 행이 선택되었습니다.
+
+SQL> -- 21. sal이 1000 이상이고 부서번호가 30번인 사람의 사원명과 급여, 사원번호를 출력하시오
+
+SQL> select ename, sal, empno
+  2  from emp
+  3  where deptno = 30 and sal >= 1000;
+
+ENAME                       SAL      EMPNO                                      
+-------------------- ---------- ----------                                      
+ALLEN                      1600       7499                                      
+WARD                       1250       7521                                      
+MARTIN                     1250       7654                                      
+BLAKE                      2850       7698                                      
+TURNER                     1500       7844                                      
+
+SQL> -- 22. sal이 800 이상 1500 미만의 사람의 이름, 부서, 급여를 출력하시오
+
+SQL> select e.ename, d.dname, e.sal
+  2  from emp e, dept d
+  3  where e.deptno = d.deptno and e.sal >= 800 and e.sal < 1500;
+
+ENAME                DNAME                               SAL                    
+-------------------- ---------------------------- ----------                    
+SMITH                RESEARCH                            800                    
+WARD                 SALES                              1250                    
+MARTIN               SALES                              1250                    
+ADAMS                RESEARCH                           1100                    
+JAMES                SALES                               950                    
+MILLER               OPERATIONS                         1300                    
+
+6 행이 선택되었습니다.
+
+SQL> -- 23. 수당이 300이거나 500이거나 1400인 사람들의 사전, 이름, 수당을 출력하시오
+
+SQL> select empno, ename, comm
+  2  from emp
+  3  where comm in (300, 500, 1400);
+
+     EMPNO ENAME                      COMM                                      
+---------- -------------------- ----------                                      
+      7499 ALLEN                       300                                      
+      7521 WARD                        500                                      
+      7654 MARTIN                     1400                                      
+
+SQL> -- 24. 사원테이블에서 급여가 2500이하이고 job이 MANAGER인 사람의 사원번호, 이름, 급여, 직속상사사번을 출력하시오
+
+SQL> select empno, ename, sal, mgr
+  2  from emp
+  3  where sal <= 2500 and job = 'MANAGER';
+
+     EMPNO ENAME                       SAL        MGR                           
+---------- -------------------- ---------- ----------                           
+      7782 CLARK                      2450       7839                           
+
+SQL> -- 25. 사원테이블에서 입사일자가 82년도~83년도인 사원의 사원번호와 이름, 직업, 입사일을 출력하시오
+
+SQL> select empno, ename, job, hiredate
+  2  from emp
+  3  where hiredate between '1982/01/01' and '1983/12/31';
+
+     EMPNO ENAME                JOB                HIREDATE                     
+---------- -------------------- ------------------ --------                     
+      7788 SCOTT                ANALYST            82/12/09                     
+      7876 ADAMS                CLERK              83/01/12                     
+      7934 MILLER               CLERK              82/01/23                     
+
+SQL> spool off
