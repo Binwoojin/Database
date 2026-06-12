@@ -1,0 +1,20 @@
+SQL> DESC EMP (사원) 
+ 이름                                      널?      유형
+ ----------------------------------------- -------- ----------------------------
+ EMPNO   (사원번호)                                   NOT NULL NUMBER(4)
+ ENAME    (사원명)                                          VARCHAR2(10)
+ JOB         (직무)                                       VARCHAR2(9)
+ MGR       ( 직속상사의사원번호)                                        NUMBER(4)
+ HIREDATE(입사일)                                           DATE
+ SAL         (급여)                                       NUMBER(7,2)
+ COMM     (수당)                                          NUMBER(7,2)
+ DEPTNO   (부서번호)                                          NUMBER(2)
+
+
+
+SQL> desc dept  (부서)
+ 이름                                      널?      유형
+ ----------------------------------------- -------- ----------------------------
+ DEPTNO   (부서번호)                                 NOT NULL NUMBER(2)
+ DNAME    (부서명)                                          VARCHAR2(14)
+ LOC         (부서위치)                                       VARCHAR2(13)
