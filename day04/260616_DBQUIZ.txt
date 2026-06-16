@@ -1,0 +1,98 @@
+-- 1. EMP 테이블을 복사해서 TEST_EMP 테이블을 생성
+CREATE TABLE TEST_EMP
+as
+SELECT * FROM emp;
+
+SELECT * FROM TEST_EMP;
+
+-- 2. DEPT 테이블을 복사해서 TEST_DEPT 테이블을 생성
+CREATE TABLE TEST_DEPT
+AS
+SELECT * FROM dept;
+
+-- 3. TEST_DEPT 테이블에 새로운 부서를 추가
+-- 조건) 부서번호 : 50 | 부서명 : 자재 | 지역 : SEOUL
+INSERT INTO TEST_DEPT
+VALUES (50, '자재', 'SEOUL');
+
+SELECT * FROM TEST_DEPT;
+
+-- 3-1) TEST_EMP 테이블에서 사원번호가 7369인 사원의 급여를 3000으로 수정
+UPDATE TEST_EMP
+SET sal = 3000
+WHERE empno = 7369;
+
+SELECT * 
+FROM TEST_EMP
+WHERE empno = 7369;
+
+-- 4. DEPTNO가 30인 사원들의 급여를 모두 10% 인상
+UPDATE TEST_EMP
+SET comm = comm * 1.1
+WHERE deptno = 30;
+
+SELECT deptno, ename, comm
+FROM TEST_EMP
+ORDER BY deptno DESC;
+
+-- 4-1) TEST_EMP 테이블에서 커미션이 NULL인 사원 중에서 급여가 1000 미만인 사원을 삭제
+DELETE FROM TEST_EMP
+WHERE comm IS NULL AND sal < 1000;
+
+SELECT ename, sal, comm
+FROM test_emp
+WHERE comm IS NULL
+ORDER BY sal ASC;
+
+-- 5. TEST_EMP 테이블에 새로운 사원을 추가
+-- 조건) 사원번호 : 9001 | 이름 : KIM | 직무 : CLERK | 관리자번호 : 7902 | 입사일 : 2026.06.16 | 급여 : 1500 | 커미션 : NULL | 부서번호 : DEPT 테이블에서 부서명이 ACCOUNTING인 부서번호 사용
+INSERT INTO TEST_EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+VALUES (9001, 'KIM', 'CLERK', 7902, '2026/06/16', 1500, NULL, 10);
+
+SELECT * FROM test_emp;
+
+-- 6. 사원 교육 이력을 저장할 EMP_TRAINNING 테이블을 생성
+-- 조건) 교육번호 - TRAINING_ID 숫자형 5자리 | 사원번호 - EMPNO 숫자형 4자리 | 교육명 - TRAINNING_NAME 문자형 50자리 | 교육일자 - TRAINNING_DATE 날짜형
+CREATE TABLE EMP_TRAINING
+(TRAINING_ID NUMBER(5),
+EMPNO NUMBER(4),
+TRAINING_NAME VARCHAR2(50),
+TRAINING_DATE DATE);
+
+SELECT * FROM EMP_TRAINING;
+
+-- 7. TEST_EMP 테이블에 이메일 컬럼을 추가
+-- 조건) 컬럼명 : EMAIL | 자료형 : VARCHAR2(100)
+ALTER TABLE TEST_EMP 
+ADD EMAIL VARCHAR2(100);
+
+SELECT * FROM TEST_EMP;
+
+-- 8. TEST_EMP 테이블의 ENAME 컬럼 크기를 VARCHAR2(30)으로 변경
+ALTER TABLE TEST_EMP 
+MODIFY ENAME VARCHAR2(30);
+
+-- 9. TEST_DEPT 테이블의 LOC 컬럼명을 LOCATION으로 변경
+ALTER TABLE TEST_DEPT 
+RENAME COLUMN LOC TO LOCATION;
+
+SELECT * FROM TEST_DEPT;
+
+-- 10. TEST_EMP 테이블에서 EMAIL 칼럼을 삭제
+ALTER TABLE TEST_EMP 
+DROP COLUMN EMAIL;
+
+SELECT * FROM TEST_EMP;
+
+-- 11. EMP_TRAINING 테이블명을 TRAINING_HISTORY로 변경
+RENAME EMP_TRAINING TO TRAINING_HISTORY;
+
+SELECT * FROM EMP_TRAINING; -- 에러남
+SELECT * FROM TRAINING_HISTORY; -- 정상작동
+
+-- 12. TRAINING_HISTORY 테이블의 모든 데이터를 삭제
+-- 단, 테이블 구조는 유지 (desc training_history)
+TRUNCATE TABLE TRAINING_HISTORY;
+
+-- 13. TRAINING_HISTORY 테이블을 완전히 삭제
+DROP TABLE TRAINING_HISTORY;
